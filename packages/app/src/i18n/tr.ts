@@ -126,6 +126,8 @@ export const dict = {
 
   "dialog.model.unpaid.freeModels.title": "OpenCode tarafından sunulan ücretsiz modeller",
   "dialog.model.unpaid.addMore.title": "Popüler sağlayıcılardan daha fazla model ekleyin",
+  "dialog.model.unpaid.viewMoreProviders": "70'ten fazla sağlayıcıyı gör",
+  "dialog.provider.custom.label": "OpenAI uyumlu özel sağlayıcı",
 
   "dialog.provider.viewAll": "Daha fazla sağlayıcı göster",
 
@@ -690,6 +692,9 @@ export const dict = {
   "session.header.open.ariaLabel": "{{app}} ile aç",
   "session.header.open.menu": "Açma seçenekleri",
   "session.header.open.copyPath": "Yolu kopyala",
+  "session.header.reveal.containingFolder": "İçeren klasörü aç",
+  "session.header.reveal.fileExplorer": "Dosya Gezgini'nde göster",
+  "session.header.reveal.finder": "Finder'da göster",
 
   "status.popover.trigger": "Durum",
   "status.popover.ariaLabel": "Sunucu yapılandırmaları",

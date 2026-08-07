@@ -148,6 +148,8 @@ export const dict = {
   "dialog.model.manage.provider.toggle": "切换所有 {{provider}} 模型",
   "dialog.model.unpaid.freeModels.title": "OpenCode 提供的免费模型",
   "dialog.model.unpaid.addMore.title": "从热门提供商添加更多模型",
+  "dialog.model.unpaid.viewMoreProviders": "查看更多 70+ 提供商",
+  "dialog.provider.custom.label": "兼容 OpenAI 的自定义提供商",
 
   "dialog.provider.viewAll": "查看更多提供商",
 
@@ -676,6 +678,9 @@ export const dict = {
   "session.header.open.ariaLabel": "在 {{app}} 中打开",
   "session.header.open.menu": "打开选项",
   "session.header.open.copyPath": "复制路径",
+  "session.header.reveal.containingFolder": "打开所在文件夹",
+  "session.header.reveal.fileExplorer": "在文件资源管理器中显示",
+  "session.header.reveal.finder": "在 Finder 中显示",
 
   "status.popover.trigger": "状态",
   "status.popover.ariaLabel": "服务器配置",

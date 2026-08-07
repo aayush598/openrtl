@@ -122,6 +122,8 @@ export const dict = {
 
   "dialog.model.unpaid.freeModels.title": "Besplatni modeli koje obezbjeđuje OpenCode",
   "dialog.model.unpaid.addMore.title": "Dodaj još modela od popularnih provajdera",
+  "dialog.model.unpaid.viewMoreProviders": "Pogledajte više od 70 provajdera",
+  "dialog.provider.custom.label": "Prilagođeni provajder kompatibilan s OpenAI",
 
   "dialog.provider.viewAll": "Prikaži više provajdera",
 
@@ -686,6 +688,9 @@ export const dict = {
   "session.header.open.ariaLabel": "Otvori u {{app}}",
   "session.header.open.menu": "Opcije otvaranja",
   "session.header.open.copyPath": "Kopiraj putanju",
+  "session.header.reveal.containingFolder": "Otvori nadređenu mapu",
+  "session.header.reveal.fileExplorer": "Prikaži u File Exploreru",
+  "session.header.reveal.finder": "Prikaži u Finderu",
 
   "status.popover.trigger": "Status",
   "status.popover.ariaLabel": "Konfiguracije servera",

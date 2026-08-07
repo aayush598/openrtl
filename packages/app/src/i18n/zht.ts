@@ -126,6 +126,8 @@ export const dict = {
 
   "dialog.model.unpaid.freeModels.title": "OpenCode 提供的免費模型",
   "dialog.model.unpaid.addMore.title": "從熱門提供者新增更多模型",
+  "dialog.model.unpaid.viewMoreProviders": "查看更多 70+ 提供者",
+  "dialog.provider.custom.label": "相容於 OpenAI 的自訂提供者",
 
   "dialog.provider.viewAll": "查看更多提供者",
 
@@ -674,6 +676,9 @@ export const dict = {
   "session.header.open.ariaLabel": "在 {{app}} 中開啟",
   "session.header.open.menu": "開啟選項",
   "session.header.open.copyPath": "複製路徑",
+  "session.header.reveal.containingFolder": "開啟所在資料夾",
+  "session.header.reveal.fileExplorer": "在檔案總管中顯示",
+  "session.header.reveal.finder": "在 Finder 中顯示",
 
   "status.popover.trigger": "狀態",
   "status.popover.ariaLabel": "伺服器設定",

@@ -121,6 +121,8 @@ export const dict = {
 
   "dialog.model.unpaid.freeModels.title": "Gratis modeller levert av OpenCode",
   "dialog.model.unpaid.addMore.title": "Legg til flere modeller fra populære leverandører",
+  "dialog.model.unpaid.viewMoreProviders": "Se 70+ flere leverandører",
+  "dialog.provider.custom.label": "Tilpasset OpenAI-kompatibel leverandør",
 
   "dialog.provider.viewAll": "Vis flere leverandører",
 
@@ -567,6 +569,9 @@ export const dict = {
   "session.header.open.ariaLabel": "Åpne i {{app}}",
   "session.header.open.menu": "Åpne alternativer",
   "session.header.open.copyPath": "Kopier bane",
+  "session.header.reveal.containingFolder": "Åpne inneholdende mappe",
+  "session.header.reveal.fileExplorer": "Vis i Filutforsker",
+  "session.header.reveal.finder": "Vis i Finder",
 
   "status.popover.trigger": "Status",
   "status.popover.ariaLabel": "Serverkonfigurasjoner",

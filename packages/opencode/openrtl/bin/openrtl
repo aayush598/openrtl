@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+#
+# OpenRTL launcher (part of the openrtl product package).
+#
+# Usage:
+#   openrtl                    run the OpenRTL TUI in the current directory
+#   openrtl new <name>         scaffold a new OpenRTL project
+#   openrtl scaffold <name>    alias for new
+#   openrtl doctor             check the OpenRTL toolchain and configuration
+#   openrtl help               show this help
+#   openrtl <args>             forward to the underlying opencode CLI
+#
+# Environment:
+#   OPENRTL_HOME   install location of the OpenRTL bundle+scaffold (auto-detected)
+#   OPENCODE_BIN   path to the OpenRTL binary (default: the OpenRTL-built binary
+#                  next to this launcher, falling back to `opencode` on PATH)
+
+set -euo pipefail
+
+# Resolve symlinks so the launcher finds its real install dir even when
+# reached via a PATH symlink (e.g. ~/.local/bin/openrtl -> .../openrtl/bin).
+LAUNCHER="$(readlink -f "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(cd "$(dirname "$LAUNCHER")" && pwd)"
+# In the merged package, the workflow lives at packages/opencode/openrtl.
+export OPENRTL_HOME="${OPENRTL_HOME:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+
+# Prefer the OpenRTL-built binary shipped with this launcher; fall back to the
+# system opencode so the official install is never modified.
+if [[ -x "$OPENRTL_HOME/bin/opencode" ]]; then
+  OPENCODE_BIN="${OPENCODE_BIN:-$OPENRTL_HOME/bin/opencode}"
+else
+  OPENCODE_BIN="${OPENCODE_BIN:-opencode}"
+fi
+
+# Load a .env file in the current directory if present (API keys etc.)
+if [[ -f ".env" ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  . ./.env
+  set +a
+fi
+
+usage() {
+  cat <<'EOF'
+OpenRTL - FPGA / IC product development on open-source tools (built on opencode).
+
+Usage:
+  openrtl                      run the OpenRTL TUI in the current directory
+  openrtl new <name> [--dir P] [--desc "..."] [--preset full|fast-proto]
+                               scaffold a new project
+  openrtl doctor               check toolchain + configuration
+  openrtl help                 show this help
+  openrtl <args>               forward any other arguments to the opencode CLI
+
+Setup:  run the OpenRTL installer (openrtl/install.sh) once.
+Next:   cd into a scaffolded project, type `openrtl`, then `/openrtl` to begin.
+EOF
+}
+
+case "${1:-}" in
+  "" ) exec "$OPENCODE_BIN" "$@" ;;
+  help | --help | -h )
+    usage
+    ;;
+  new | scaffold )
+    shift
+    if [[ -z "${1:-}" ]]; then
+      echo "error: openrtl new requires a project name (e.g. openrtl new my-fpga-card)" >&2
+      exit 1
+    fi
+    if ! command -v bun >/dev/null 2>&1; then
+      echo "error: bun is required to scaffold. Install it from https://bun.sh" >&2
+      exit 1
+    fi
+    exec bun run "$OPENRTL_HOME/scaffold/scaffold.ts" --name "$1" "${@:2}"
+    ;;
+  doctor )
+    echo "== OpenRTL doctor =="
+    echo "OPENRTL_HOME:  $OPENRTL_HOME"
+    echo "package:       $OPENRTL_HOME/package.json"
+    echo "bundle:        $OPENRTL_HOME/bundle (skills/agents/commands)"
+    echo "scaffold:      $OPENRTL_HOME/scaffold/scaffold.ts"
+    echo ""
+    echo "== OpenRTL config =="
+    for f in "$OPENRTL_HOME/bundle/opencode.jsonc"; do
+      if [[ -f "$f" ]]; then
+        echo "  config: $f (OK)"
+      else
+        echo "  config: $f (MISSING)"
+      fi
+    done
+    echo ""
+    echo "== Toolchain =="
+    for tool in bun opencode yosys nextpnr verilator iverilog cocotb symbiyosys; do
+      if command -v "$tool" >/dev/null 2>&1; then
+        echo "  $tool: $(command -v "$tool")"
+      else
+        echo "  $tool: NOT FOUND"
+      fi
+    done
+    echo ""
+    if [[ -n "${NVIDIA_API_KEY:-}" ]]; then
+      echo "NVIDIA_API_KEY: set (${#NVIDIA_API_KEY} chars)"
+    else
+      echo "NVIDIA_API_KEY: NOT SET — set it or configure another provider in opencode.jsonc"
+    fi
+    ;;
+
+  # openrtl toolchain adapters
+  toolchain )
+    shift
+    if [[ -z "${1:-}" ]]; then
+      echo "usage: openrtl toolchain <yosys|nextpnr|verilator|iverilog|vivado|quartus|libero|flow>" >&2
+      exit 1
+    fi
+    exec "$OPENRTL_HOME/toolchain/flow.sh" "$@"
+    ;;
+  * )
+    exec "$OPENCODE_BIN" "$@"
+    ;;
+esac

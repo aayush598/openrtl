@@ -122,6 +122,8 @@ export const dict = {
 
   "dialog.model.unpaid.freeModels.title": "Бесплатные модели от OpenCode",
   "dialog.model.unpaid.addMore.title": "Добавьте больше моделей от популярных провайдеров",
+  "dialog.model.unpaid.viewMoreProviders": "Показать ещё 70+ провайдеров",
+  "dialog.provider.custom.label": "Пользовательский провайдер, совместимый с OpenAI",
 
   "dialog.provider.viewAll": "Показать больше провайдеров",
 
@@ -684,6 +686,9 @@ export const dict = {
   "session.header.open.ariaLabel": "Открыть в {{app}}",
   "session.header.open.menu": "Варианты открытия",
   "session.header.open.copyPath": "Копировать путь",
+  "session.header.reveal.containingFolder": "Открыть содержащую папку",
+  "session.header.reveal.fileExplorer": "Показать в «Проводнике»",
+  "session.header.reveal.finder": "Показать в Finder",
 
   "status.popover.trigger": "Статус",
   "status.popover.ariaLabel": "Настройки серверов",

@@ -122,6 +122,8 @@ export const dict = {
 
   "dialog.model.unpaid.freeModels.title": "โมเดลฟรีที่จัดหาให้โดย OpenCode",
   "dialog.model.unpaid.addMore.title": "เพิ่มโมเดลเพิ่มเติมจากผู้ให้บริการยอดนิยม",
+  "dialog.model.unpaid.viewMoreProviders": "ดูผู้ให้บริการเพิ่มอีก 70+ ราย",
+  "dialog.provider.custom.label": "ผู้ให้บริการแบบกำหนดเองที่เข้ากันได้กับ OpenAI",
 
   "dialog.provider.viewAll": "แสดงผู้ให้บริการเพิ่มเติม",
 
@@ -680,6 +682,9 @@ export const dict = {
   "session.header.open.ariaLabel": "เปิดใน {{app}}",
   "session.header.open.menu": "ตัวเลือกการเปิด",
   "session.header.open.copyPath": "คัดลอกเส้นทาง",
+  "session.header.reveal.containingFolder": "เปิดโฟลเดอร์ที่อยู่",
+  "session.header.reveal.fileExplorer": "แสดงใน File Explorer",
+  "session.header.reveal.finder": "แสดงใน Finder",
 
   "status.popover.trigger": "สถานะ",
   "status.popover.ariaLabel": "การกำหนดค่าเซิร์ฟเวอร์",
