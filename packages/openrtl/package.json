@@ -1,5 +1,5 @@
 {
-  "name": "openrtl",
+  "name": "openrtl-toolchain",
   "version": "0.1.0",
   "description": "OpenRTL — 36-phase FPGA/IC product workflow with a fully open-source EDA toolchain, one-click flows, and automated reporting.",
   "license": "MIT",
