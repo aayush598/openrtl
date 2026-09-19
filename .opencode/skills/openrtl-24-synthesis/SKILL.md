@@ -17,10 +17,24 @@ Synthesis with Yosys (or vendor flow), lint-clean netlist, and resource utilizat
 ## Task breakdown (3-tier)
 - `T24.1` — Synthesis: Run and review synthesis.
 
+## Automated execution
+Run the flow driver and generate reports in one step:
+1. `bash packages/openrtl/toolchain/flow.sh synth --top <top> --arch <arch>`
+   produces `build/synth/<top>_netlist.v`, `_synth.json`, `_synth.stat`, `_synth.log`.
+2. Verify the netlist re-reads cleanly: `bash packages/openrtl/toolchain/flow.sh verify`.
+3. Generate the full synthesis report pack (netlist, resource analysis, inference,
+   warnings, constraints, optimization, quality assessment):
+   `python3 packages/openrtl/report/report.py all --project . --top <top>`
+   → `docs/24-synthesis/reports/*.md` + `*.svg`.
+4. Read the generated reports and assess against the gate criteria; archive key
+   findings in the phase context files.
+
 ## Quality gate (exit criteria — all must pass or be waived)
 - [ ] Synthesis completes cleanly
 - [ ] Resource utilization within budget
 - [ ] Synthesis netlist archived
+- [ ] Netlist lint-clean on re-read (`flow.sh verify`)
+- [ ] Reports + infographics generated under `docs/24-synthesis/reports/`
 
 ## Required engineering reviews
 - `timing` — Timing Review

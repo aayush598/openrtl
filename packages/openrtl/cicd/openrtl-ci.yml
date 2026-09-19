@@ -1,0 +1,78 @@
+# OpenRTL — GitHub Actions CI workflow (template)
+# ============================================================================
+# Runs the OpenRTL toolchain test suite on every push/PR.
+# Copy into .github/workflows/openrtl-ci.yml (or point `ci.sh`'s path at your
+# checkout) — adjust the provisioning strategy to your image/self-hosted setup.
+#
+# On the default (minimal) image the not-installed tools report SKIP, so the
+# run passes as long as nothing FAILs. For a strong gate, run provision.sh
+# first (see the `provisioned` job) so every suite executes for real.
+name: openrtl-ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  OPENRTL_DIR: packages/openrtl
+
+jobs:
+  # Minimal-image run: whatever conda/pip provides, test what is installed.
+  minimal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: "3.11"
+
+      - name: Install pip-side tools (cocotb, pytest)
+        shell: bash -l {0}
+        run: |
+          pip install cocotb pytest
+
+      - name: Run OpenRTL CI (skip install)
+        shell: bash -l {0}
+        run: bash "${{ env.OPENRTL_DIR }}/cicd/ci.sh" --skip-install
+
+      - name: Upload artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: openrtl-ci-logs
+          path: |
+            ${{ env.OPENRTL_DIR }}/build/ci
+            ${{ env.OPENRTL_DIR }}/build/lint
+            ${{ env.OPENRTL_DIR }}/docs/**/reports/*.md
+
+  # Fully provisioned run: installs the whole toolchain, then gates on it.
+  provisioned:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: "3.11"
+          environment-file: ${{ env.OPENRTL_DIR }}/toolchain/conda-env.yml
+          activate-environment: openrtl
+          cache-environment: true
+
+      - name: Run OpenRTL CI (provisioned gate)
+        shell: bash -l {0}
+        run: bash "${{ env.OPENRTL_DIR }}/cicd/ci.sh" --skip-install --strict
+
+      - name: Upload artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: openrtl-ci-logs-provisioned
+          path: |
+            ${{ env.OPENRTL_DIR }}/build/ci
+            ${{ env.OPENRTL_DIR }}/docs/**/reports/*.md

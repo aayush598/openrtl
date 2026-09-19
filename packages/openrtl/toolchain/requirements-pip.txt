@@ -1,0 +1,36 @@
+# =============================================================================
+# OpenRTL — pip extras (installed by provision.sh into the openrtl env)
+# -----------------------------------------------------------------------------
+# Packages that are not on conda-forge or are cleaner via pip. All open source.
+# =============================================================================
+# --- report engine / analysis -------------------------------------------------
+numpy
+scipy
+matplotlib
+
+# --- EDA / formal -------------------------------------------------------------
+edalize
+cocotb
+symbiyosys
+z3-solver
+
+# --- embedded -----------------------------------------------------------------
+west                      # Zephyr build tooling
+
+# --- manufacturing ------------------------------------------------------------
+kibom                     # BOM processor
+
+# --- docs ---------------------------------------------------------------------
+mkdocs
+sphinx
+
+# --- CI / release -------------------------------------------------------------
+python-semantic-release
+dvc
+
+# --- field support / telemetry -------------------------------------------------
+opentelemetry-api
+pyserial
+
+# --- config --------------------------------------------------------------------
+PyYAML

@@ -1,0 +1,29 @@
+{
+  "name": "openrtl",
+  "version": "0.1.0",
+  "description": "OpenRTL — 36-phase FPGA/IC product workflow with a fully open-source EDA toolchain, one-click flows, and automated reporting.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./toolchain/flow.sh": "./toolchain/flow.sh",
+    "./toolchain/provision.sh": "./toolchain/provision.sh",
+    "./toolchain/doctor.sh": "./toolchain/doctor.sh",
+    "./toolchain/manifest.yaml": "./toolchain/manifest.yaml",
+    "./report/report.py": "./report/report.py"
+  },
+  "scripts": {
+    "doctor": "bash toolchain/doctor.sh",
+    "provision": "bash toolchain/provision.sh",
+    "lint": "bash toolchain/flow.sh lint",
+    "sim": "bash toolchain/flow.sh sim",
+    "synth": "bash toolchain/flow.sh synth",
+    "pnr": "bash toolchain/flow.sh pnr",
+    "reports": "bash toolchain/flow.sh reports",
+    "handoff": "bash toolchain/flow.sh handoff",
+    "all": "bash toolchain/flow.sh all",
+    "scaffold": "bun run scaffold/scaffold.ts",
+    "test": "bash tests/run_tests.sh",
+    "ci": "bash cicd/ci.sh --skip-install"
+  }
+}

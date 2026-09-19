@@ -1,0 +1,33 @@
+# OpenRTL — package-local ignore rules.
+# Keeps generated artifacts and tool scratch files out of git while the
+# tracked sources (toolchain/, report/, scaffold/, tests/, docs/, cicd/) stay
+# clean. Per-project build output is never committed.
+
+# --- Python ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.python-version
+.venv/
+venv/
+
+# --- OpenRTL flow / build artifacts ---------------------------------------
+build/
+
+# --- Yosys / tool scratch ---------------------------------------------------
+abc.history
+*.log
+*.rpt
+
+# --- cocotb / SymbiYosys run outputs ---------------------------------------
+sim_build/
+results.xml
+formal/*/
+
+# --- Handoff / release packages ---------------------------------------------
+*.zip
+
+# --- Editors / OS ------------------------------------------------------------
+.DS_Store
+*~

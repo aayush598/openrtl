@@ -1,0 +1,27 @@
+# OpenRTL toolchain environment
+# Cross-platform, open-source EDA toolchain via conda-forge + pip.
+# Apply with:  conda env create -f conda-env.yml   (or provision.sh)
+# Requires no root: works with conda, micromamba, or miniforge.
+# conda-forge provides yosys, iverilog and verilator. The FPGA place-and-route
+# stack (icestorm, nextpnr-ice40) and SymbiYosys are NOT on conda-forge;
+# install those with `provision.sh --source` (builds them into
+# ~/.local/openrtl) to complete the toolchain.
+# Per-OS extras:
+#   Linux: nothing extra; iverilog from conda works out of the box.
+#   macOS: same env works (conda ships binaries).
+#   Windows: use WSL2 for nextpnr/iverilog interoperability.
+name: openrtl
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.9
+  - pip
+  - yosys>=0.33
+  - iverilog>=11
+  - verilator>=5.0
+  - pip:
+      - cocotb>=1.8
+      - pytest
+      - pyverilog
+      - PyYAML
+      - z3-solver

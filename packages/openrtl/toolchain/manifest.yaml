@@ -1,0 +1,150 @@
+# OpenRTL Toolchain Manifest
+# Central, machine-readable inventory of every open-source EDA tool the
+# workflow uses, keyed to the phase that consumes it. This is the single
+# source of truth for: provision.sh (installation), doctor.sh (verification),
+# flow.sh (drivers) and the report engine (versions in headers).
+#
+# Tool : Package            : Phase
+# ---------------------------------------------------------------------------
+# Yosys : yosys (conda)     : 23-formal, 24-synthesis, 27-optimization
+# nextpnr : nextpnr (conda) : 25-place-and-route, 26-timing-closure
+# icepack/iceunpack : icestorm : 25-pnr (bitstream)
+# Icarus Verilog : iverilog  : 19-verification-plan, 22-simulation
+# Verilator : verilator     : lint, coverage, 22-simulation
+# cocotb : cocotb (pip)     : 22-simulation
+# pytest : pytest (pip)     : 22-simulation
+# SymbiYosys : symbiyosys   : 23-formal-verification
+# sbyc : part of symbiyosys : 23-formal
+# yosys-smtbmc : part of symbiyosys : 23-formal
+# pyverilog : pyverilog     : 27-optimization (analysis)
+# Python 3 : python>=3.9    : report engine, cocotb
+
+toolchain:
+  name: OpenRTL open-source EDA toolchain
+  doc: >
+    Every tool below is Apache-2.0/MIT/BSD licensed, installable via conda
+    (open source channel) or pip, and driven automatically by flow.sh.
+    Verilog HDL targets (ASIC/FPGA) are fully supported; VHDL requires an
+    additional open VHDL front-end (Yosys ghdl plugin) and is opt-in.
+
+  matrix:
+    - tool: yosys
+      command: yosys
+      package: yosys
+      source: conda
+      version_ge: "0.33"
+      check: 'yosys --version'
+      flows: [formal, synth, optimization, verify]
+      phases: [23-formal-verification, 24-synthesis, 27-optimization]
+      note: synthesis + formal SAT/BMC engine
+
+    - tool: nextpnr
+      command: nextpnr-ice40
+      package: nextpnr
+      source: conda
+      version_ge: "0.5"
+      check: 'nextpnr-ice40 --version'
+      flows: [pnr, timing]
+      phases: [25-place-and-route, 26-timing-closure]
+      note: place & route + STA (open source, per-arch binaries)
+
+    - tool: icestorm
+      command: icepack
+      package: icestorm
+      source: conda
+      check: 'icepack --version'
+      flows: [pnr]
+      phases: [25-place-and-route]
+      note: bitstream packing (icepack/iceunpack/icebox)
+
+    - tool: icetime
+      command: icetime
+      package: icestorm
+      source: conda
+      flows: [timing]
+      phases: [26-timing-closure]
+      note: static timing analysis on placed/routed design
+
+    - tool: iverilog
+      command: iverilog
+      package: iverilog
+      source: conda
+      version_ge: "11"
+      check: 'iverilog -V'
+      flows: [sim]
+      phases: [22-simulation]
+      note: Verilog simulator + VCD generation for cocotb
+
+    - tool: verilator
+      command: verilator
+      package: verilator
+      source: conda
+      version_ge: "5.0"
+      check: 'verilator --version'
+      flows: [lint, coverage, sim]
+      phases: [22-simulation]
+      note: lint, 2-state simulation, statement/toggle coverage
+
+    - tool: cocotb
+      command: python -m cocotb
+      package: cocotb
+      source: pip
+      check: 'python3 -c "import cocotb; print(cocotb.__version__)"'
+      flows: [sim]
+      phases: [22-simulation]
+      note: coroutine-based verification library
+
+    - tool: pytest
+      command: pytest
+      package: pytest
+      source: pip
+      check: 'pytest --version'
+      flows: [sim]
+      phases: [22-simulation]
+      note: test runner for regression reporting
+
+    - tool: symbiyosys
+      command: sby
+      package: symbiyosys
+      source: conda
+      check: 'sby --version'
+      flows: [formal]
+      phases: [23-formal-verification]
+      note: formal property checking front-end
+
+    - tool: yosys-smtbmc
+      command: yosys-smtbmc
+      package: symbiyosys
+      source: conda
+      flows: [formal]
+      phases: [23-formal-verification]
+      note: SMT-based BMC engine
+
+    - tool: pyverilog
+      command: python3 -c "import pyverilog"
+      package: pyverilog
+      source: pip
+      flows: [optimization]
+      phases: [27-optimization]
+      note: RTL analysis (optional, for optimization insights)
+
+  languages:
+    verilog: supported
+    systemverilog: supported
+    vhdl: opt-in (yosys ghdl plugin)
+    chisel: via firrtl (out of scope)
+
+  artifacts:
+    netlist: build/synth/<top>_netlist.v
+    synth_json: build/synth/<top>_synth.json
+    synth_stat: build/synth/<top>_synth.stat
+    synth_log: build/synth/<top>_synth.log
+    pnr_asc: build/pnr/<top>.asc
+    bitstream: build/pnr/<top>.bin
+    pnr_log: build/pnr/pnr.log
+    timing_rpt: build/timing/timing.rpt
+    vcd: build/sim/<top>.vcd
+    coverage: build/coverage/coverage.dat
+    reports: docs/<phase>/reports/*.md
+    infographics: docs/<phase>/reports/*.svg
+    handoff: docs/34-release/handoff/<project>-handoff-<date>.zip
